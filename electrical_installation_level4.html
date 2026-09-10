@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b1220">
+<title>Electrical Installation · Level 4 Study Hub</title>
+<style>
+:root{
+  --bg:#f5f7fb;--card:#fff;--text:#172033;--muted:#667085;
+  --primary:#2563eb;--primary2:#1d4ed8;--line:#e5e7eb;
+  --good:#16a34a;--bad:#dc2626;--shadow:0 10px 30px rgba(15,23,42,.08)
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+button,input,select{font:inherit}
+button{cursor:pointer}
+header{background:linear-gradient(135deg,#0b1220,#173b7a);color:#fff;padding:28px 18px 42px}
+.wrap{max-width:1150px;margin:auto}
+.hero{display:flex;align-items:center;justify-content:space-between;gap:20px}
+h1{margin:0 0 8px;font-size:clamp(28px,5vw,44px)}
+.hero p{margin:0;color:#dbeafe}
+.badge{background:rgba(255,255,255,.12);padding:10px 14px;border:1px solid rgba(255,255,255,.2);border-radius:999px;white-space:nowrap}
+.toolbar{margin:-22px auto 24px;background:var(--card);padding:14px;border-radius:18px;box-shadow:var(--shadow);display:grid;grid-template-columns:1fr 180px auto;gap:10px}
+input,select{width:100%;padding:13px 14px;border:1px solid var(--line);border-radius:12px;outline:none;background:#fff;color:var(--text)}
+input:focus,select:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+.btn{border:0;border-radius:12px;padding:12px 16px;background:var(--primary);color:#fff;font-weight:700}
+.btn:hover{background:var(--primary2)}
+.btn.alt{background:#eef4ff;color:#1d4ed8}
+.btn.dark{background:#172033}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+nav button{border:1px solid var(--line);background:#fff;color:var(--text);padding:10px 14px;border-radius:10px}
+nav button.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 5px 20px rgba(15,23,42,.04)}
+.card h3{margin:0 0 8px}.card p{color:var(--muted);line-height:1.55}
+.icon{font-size:28px}
+.small{font-size:13px;color:var(--muted)}
+.tag{display:inline-block;background:#eff6ff;color:#1d4ed8;border-radius:999px;padding:5px 9px;font-size:12px;margin:3px 3px 0 0}
+section{margin-bottom:28px}
+.hidden{display:none!important}
+.note h2{margin-top:0}
+.note ul,.note ol{line-height:1.75}
+.note strong{color:#0f3f96}
+.diagram{overflow:auto;background:#fafafa;border:1px solid var(--line);border-radius:14px;padding:12px;margin:15px 0}
+.diagram svg{display:block;margin:auto;max-width:100%;height:auto}
+.legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:10px}
+.legend div{padding:9px;background:#f8fafc;border-radius:9px;font-size:13px}
+.qa{border:1px solid var(--line);border-radius:14px;margin:10px 0;overflow:hidden}
+.q{padding:15px;font-weight:700;background:#f8fafc}
+.a{padding:15px;line-height:1.6}
+.quiz-box{max-width:800px;margin:auto}
+.option{display:block;width:100%;text-align:left;background:#fff;border:1px solid var(--line);padding:13px;margin:9px 0;border-radius:11px}
+.option:hover{border-color:var(--primary)}
+.option.correct{border-color:var(--good);background:#f0fdf4}
+.option.wrong{border-color:var(--bad);background:#fef2f2}
+.score{font-size:20px;font-weight:800;margin:14px 0}
+.progress{height:9px;background:#e5e7eb;border-radius:99px;overflow:hidden;margin:10px 0 18px}
+.progress span{display:block;height:100%;background:var(--primary);width:0}
+.empty{text-align:center;padding:35px;color:var(--muted)}
+footer{text-align:center;padding:30px;color:var(--muted);font-size:13px}
+.ai{position:fixed;right:18px;bottom:18px;z-index:5}
+.ai button{border:0;border-radius:50%;width:58px;height:58px;background:#111827;color:white;font-size:24px;box-shadow:var(--shadow)}
+.modal{position:fixed;inset:0;background:rgba(2,6,23,.65);display:none;align-items:center;justify-content:center;padding:18px;z-index:10}
+.modal.show{display:flex}
+.modalbox{background:#fff;max-width:650px;width:100%;max-height:85vh;overflow:auto;border-radius:20px;padding:22px}
+.close{float:right;border:0;background:#f1f5f9;border-radius:9px;padding:7px 10px}
+@media(max-width:700px){.toolbar{grid-template-columns:1fr}.hero{display:block}.badge{display:inline-block;margin-top:14px}}
+</style>
+</head>
+<body>
+<header>
+<div class="wrap hero">
+<div><h1>⚡ Electrical Installation · Level 4</h1><p>Notes • Questions & Answers • Diagrams • Practice Quiz</p></div>
+<div class="badge">📱 Mobile Study Hub</div>
+</div>
+</header>
+
+<main class="wrap">
+<div class="toolbar">
+<input id="search" placeholder="🔎 Search notes, questions, topics..." oninput="render()">
+<select id="filter" onchange="render()">
+<option value="all">All topics</option>
+<option value="safety">Electrical Safety</option>
+<option value="theory">Electrical Principles</option>
+<option value="wiring">Wiring Systems</option>
+<option value="lighting">Lighting</option>
+<option value="protection">Protection</option>
+<option value="earthing">Earthing</option>
+<option value="testing">Testing</option>
+<option value="install">Installation</option>
+</select>
+<button class="btn" onclick="startVoice()">🎙️ Voice</button>
+</div>
+
+<nav>
+<button class="active" onclick="showTab('home',this)">🏠 Home</button>
+<button onclick="showTab('notes',this)">📚 Notes</button>
+<button onclick="showTab('qa',this)">❓ Q&A</button>
+<button onclick="showTab('quiz',this)">📝 Quiz</button>
+</nav>
+
+<section id="home">
+<div class="grid">
+<div class="card"><div class="icon">📚</div><h3>Topic Notes</h3><p>Study core Level 4 electrical installation concepts with practical explanations.</p></div>
+<div class="card"><div class="icon">📐</div><h3>Reference Diagrams</h3><p>Simple circuit and wiring diagrams are included directly in the notes.</p></div>
+<div class="card"><div class="icon">❓</div><h3>Questions & Answers</h3><p>Use the question bank to revise definitions, calculations and installation practice.</p></div>
+<div class="card"><div class="icon">🎯</div><h3>Practice Quiz</h3><p>Test yourself and track your score. Questions are selected from the study content.</p></div>
+</div>
+<div class="card" style="margin-top:16px">
+<h2>How to use</h2>
+<ol>
+<li>Choose <b>Notes</b> and select a topic using the filter.</li>
+<li>Use the search box to find a term such as <b>MCB</b>, <b>earthing</b> or <b>two-way switching</b>.</li>
+<li>Review the <b>Q&A</b> section.</li>
+<li>Open <b>Quiz</b> and test your understanding.</li>
+</ol>
+<p class="small">Educational reference only. Always follow your current training syllabus, applicable Kenyan standards/regulations, manufacturer instructions and the supervision requirements of your training provider.</p>
+</div>
+</section>
+
+<section id="notes" class="hidden">
+<div id="notesList"></div>
+</section>
+
+<section id="qa" class="hidden">
+<div id="qaList"></div>
+</section>
+
+<section id="quiz" class="hidden">
+<div class="card quiz-box">
+<h2>📝 Level 4 Practice Quiz</h2>
+<div class="progress"><span id="bar"></span></div>
+<div class="score" id="score">Score: 0 / 0</div>
+<div id="question"></div>
+<div id="options"></div>
+<button class="btn" id="next" onclick="nextQuestion()">Next Question</button>
+</div>
+</section>
+</main>
+
+<footer>Electrical Installation Level 4 Study Hub • Built as a single HTML file</footer>
+
+<div class="ai"><button onclick="openAI()" title="Study assistant">🤖</button></div>
+<div class="modal" id="modal">
+<div class="modalbox">
+<button class="close" onclick="closeAI()">✕</button>
+<h2>🤖 Study Assistant</h2>
+<p>Ask a study question. This offline assistant searches the built-in study material.</p>
+<input id="aiInput" placeholder="e.g. What is an MCB?" onkeydown="if(event.key==='Enter')askAI()">
+<button class="btn" style="margin-top:10px" onclick="askAI()">Ask</button>
+<div id="aiAnswer" style="margin-top:18px;line-height:1.7"></div>
+</div>
+</div>
+
+<script>
+const notes=[
+{id:'safety',title:'Electrical Safety',icon:'🦺',text:`
+<h2>Electrical Safety</h2>
+<p>Electrical installation work must be planned and carried out to reduce the risk of electric shock, burns, fire and damage to equipment.</p>
+<ul>
+<li><strong>Isolation:</strong> disconnect the supply before working on a circuit whenever the procedure requires it.</li>
+<li><strong>Prove dead:</strong> use an appropriate voltage indicator/test instrument and follow a safe proving procedure.</li>
+<li><strong>Protective equipment:</strong> use suitable PPE for the task and environment.</li>
+<li><strong>Housekeeping:</strong> keep tools, cables and work areas organized to reduce trips and accidental contact.</li>
+<li><strong>Correct tools:</strong> use insulated and properly maintained tools where required.</li>
+</ul>
+<p><strong>Remember:</strong> never assume a circuit is dead simply because a switch is OFF.</p>`},
+{id:'theory',title:'Electrical Principles',icon:'⚡',text:`
+<h2>Electrical Principles</h2>
+<p>Basic electrical quantities used in installation work include voltage, current, resistance and power.</p>
+<ul>
+<li><strong>Voltage (V):</strong> electrical potential difference.</li>
+<li><strong>Current (I):</strong> rate of flow of electric charge, measured in amperes (A).</li>
+<li><strong>Resistance (R):</strong> opposition to current flow, measured in ohms (Ω).</li>
+<li><strong>Power (P):</strong> rate of electrical energy transfer, measured in watts (W).</li>
+</ul>
+<p><strong>Ohm's Law:</strong> V = I × R</p>
+<p><strong>Power:</strong> P = V × I</p>
+<div class="diagram"><svg viewBox="0 0 620 250" width="620" role="img" aria-label="Basic DC circuit diagram">
+<line x1="90" y1="60" x2="520" y2="60" stroke="#111827" stroke-width="4"/>
+<line x1="520" y1="60" x2="520" y2="190" stroke="#111827" stroke-width="4"/>
+<line x1="520" y1="190" x2="90" y2="190" stroke="#111827" stroke-width="4"/>
+<line x1="90" y1="190" x2="90" y2="140" stroke="#111827" stroke-width="4"/>
+<line x1="90" y1="110" x2="90" y2="60" stroke="#111827" stroke-width="4"/>
+<line x1="78" y1="105" x2="102" y2="105" stroke="#111827" stroke-width="5"/>
+<line x1="83" y1="125" x2="97" y2="125" stroke="#111827" stroke-width="5"/>
+<rect x="250" y="45" width="110" height="30" fill="#fff" stroke="#111827" stroke-width="3"/>
+<text x="305" y="66" text-anchor="middle" font-size="16">LOAD / R</text>
+<text x="90" y="220" text-anchor="middle" font-size="15">Supply</text>
+<text x="305" y="30" text-anchor="middle" font-size="15">Current I →</text>
+</svg></div>`},
+{id:'wiring',title:'Wiring Systems',icon:'🔌',text:`
+<h2>Wiring Systems</h2>
+<p>A wiring system consists of conductors, insulation, containment and accessories selected for the environment and intended use.</p>
+<ul>
+<li><strong>Conduit:</strong> provides mechanical protection and a route for conductors.</li>
+<li><strong>Trunking:</strong> provides a protected route for groups of cables.</li>
+<li><strong>Cable systems:</strong> cables may be installed using appropriate methods depending on the installation.</li>
+<li>Selection must consider current-carrying capacity, voltage drop, ambient conditions, grouping, mechanical protection and applicable requirements.</li>
+</ul>
+<h3>Basic ring final concept</h3>
+<div class="diagram"><svg viewBox="0 0 700 300" width="700">
+<rect x="90" y="60" width="140" height="70" rx="10" fill="none" stroke="#111827" stroke-width="3"/>
+<text x="160" y="102" text-anchor="middle" font-size="17">Consumer Unit</text>
+<path d="M230 75 H610 V225 H230" fill="none" stroke="#111827" stroke-width="5"/>
+<path d="M230 115 H560 V185 H230" fill="none" stroke="#2563eb" stroke-width="3" stroke-dasharray="8 7"/>
+<circle cx="330" cy="75" r="18" fill="#fff" stroke="#111827" stroke-width="3"/><text x="330" y="81" text-anchor="middle">S1</text>
+<circle cx="480" cy="75" r="18" fill="#fff" stroke="#111827" stroke-width="3"/><text x="480" y="81" text-anchor="middle">S2</text>
+<circle cx="330" cy="225" r="18" fill="#fff" stroke="#111827" stroke-width="3"/><text x="330" y="231" text-anchor="middle">S3</text>
+<circle cx="480" cy="225" r="18" fill="#fff" stroke="#111827" stroke-width="3"/><text x="480" y="231" text-anchor="middle">S4</text>
+<text x="350" y="270" font-size="15">Ring circuit returns to the consumer unit</text>
+</svg></div>
+<p class="small">Diagram is a learning illustration, not an installation drawing to build from.</p>`},
+{id:'lighting',title:'Lighting & Switching',icon:'💡',text:`
+<h2>Lighting Circuits</h2>
+<p>A common lighting arrangement uses a switch to control the live conductor feeding a lamp. Actual wiring must follow the applicable wiring rules and circuit design.</p>
+<h3>Two-way switching concept</h3>
+<div class="diagram"><svg viewBox="0 0 760 320" width="760">
+<text x="35" y="52" font-size="18">L</text><line x1="55" y1="45" x2="155" y2="45" stroke="#111827" stroke-width="4"/>
+<circle cx="185" cy="45" r="8" fill="#111827"/>
+<line x1="155" y1="45" x2="175" y2="45" stroke="#111827" stroke-width="4"/>
+<line x1="195" y1="35" x2="265" y2="75" stroke="#111827" stroke-width="4"/>
+<line x1="195" y1="55" x2="265" y2="15" stroke="#111827" stroke-width="4"/>
+<text x="210" y="105" text-anchor="middle" font-size="16">Switch 1</text>
+<line x1="265" y1="15" x2="430" y2="15" stroke="#111827" stroke-width="4"/>
+<line x1="265" y1="75" x2="430" y2="75" stroke="#111827" stroke-width="4"/>
+<line x1="430" y1="15" x2="450" y2="15" stroke="#111827" stroke-width="4"/>
+<circle cx="460" cy="45" r="8" fill="#111827"/>
+<line x1="450" y1="15" x2="525" y2="45" stroke="#111827" stroke-width="4"/>
+<line x1="450" y1="75" x2="525" y2="45" stroke="#111827" stroke-width="4"/>
+<text x="475" y="105" text-anchor="middle" font-size="16">Switch 2</text>
+<line x1="468" y1="45" x2="620" y2="45" stroke="#111827" stroke-width="4"/>
+<circle cx="650" cy="45" r="25" fill="none" stroke="#111827" stroke-width="3"/>
+<path d="M635 70 Q650 95 665 70" fill="none" stroke="#111827" stroke-width="3"/>
+<text x="650" y="130" text-anchor="middle" font-size="16">Lamp</text>
+<text x="380" y="155" text-anchor="middle" font-size="14">Two switch positions can control one light</text>
+</svg></div>
+<p><strong>Study point:</strong> two-way switching uses two two-way switches and two interconnecting conductors between the switch positions.</p>`},
+{id:'protection',title:'Protective Devices',icon:'🛡️',text:`
+<h2>Protective Devices</h2>
+<ul>
+<li><strong>Fuse:</strong> contains a fusible element that melts when excessive current persists.</li>
+<li><strong>MCB:</strong> miniature circuit breaker that provides overcurrent protection and can be reset after operation.</li>
+<li><strong>RCD:</strong> detects an imbalance/residual current and can disconnect a circuit to provide additional protection against electric shock under appropriate conditions.</li>
+<li><strong>RCBO:</strong> combines residual-current protection with overcurrent protection in one device.</li>
+</ul>
+<div class="diagram"><svg viewBox="0 0 700 260" width="700">
+<rect x="70" y="55" width="150" height="100" rx="12" fill="none" stroke="#111827" stroke-width="3"/>
+<text x="145" y="95" text-anchor="middle" font-size="17">Supply</text><text x="145" y="120" text-anchor="middle" font-size="14">Consumer Unit</text>
+<line x1="220" y1="80" x2="300" y2="80" stroke="#111827" stroke-width="4"/>
+<rect x="300" y="55" width="100" height="50" rx="8" fill="#fff" stroke="#111827" stroke-width="3"/>
+<text x="350" y="86" text-anchor="middle">RCD</text>
+<line x1="400" y1="80" x2="480" y2="80" stroke="#111827" stroke-width="4"/>
+<rect x="480" y="55" width="100" height="50" rx="8" fill="#fff" stroke="#111827" stroke-width="3"/>
+<text x="530" y="86" text-anchor="middle">MCB</text>
+<line x1="580" y1="80" x2="650" y2="80" stroke="#111827" stroke-width="4"/>
+<text x="650" y="112" text-anchor="middle" font-size="14">Circuit</text>
+<line x1="350" y1="105" x2="350" y2="195" stroke="#111827" stroke-width="3"/>
+<text x="350" y="220" text-anchor="middle" font-size="14">Protection must be correctly selected</text>
+</svg></div>`},
+{id:'earthing',title:'Earthing & Bonding',icon:'⏚',text:`
+<h2>Earthing & Bonding</h2>
+<p>Earthing provides a path for fault current and helps protective devices operate under fault conditions. Bonding reduces dangerous potential differences between conductive parts.</p>
+<ul>
+<li><strong>CPC:</strong> circuit protective conductor.</li>
+<li><strong>Main bonding:</strong> connects relevant extraneous-conductive-parts to the main earthing/bonding arrangement as required.</li>
+<li>Protective conductors must be appropriately sized and connected.</li>
+<li>Connections must be mechanically secure and electrically sound.</li>
+</ul>
+<div class="diagram"><svg viewBox="0 0 620 300" width="620">
+<rect x="220" y="35" width="180" height="80" rx="10" fill="none" stroke="#111827" stroke-width="3"/>
+<text x="310" y="70" text-anchor="middle" font-size="16">Metal enclosure</text><text x="310" y="94" text-anchor="middle" font-size="13">exposed conductive part</text>
+<line x1="310" y1="115" x2="310" y2="190" stroke="#111827" stroke-width="4"/>
+<line x1="310" y1="190" x2="220" y2="240" stroke="#111827" stroke-width="4"/>
+<line x1="310" y1="190" x2="400" y2="240" stroke="#111827" stroke-width="4"/>
+<line x1="220" y1="240" x2="400" y2="240" stroke="#111827" stroke-width="4"/>
+<line x1="295" y1="255" x2="325" y2="255" stroke="#111827" stroke-width="4"/>
+<line x1="300" y1="265" x2="320" y2="265" stroke="#111827" stroke-width="4"/>
+<text x="310" y="292" text-anchor="middle" font-size="14">Earth / protective connection</text>
+</svg></div>`},
+{id:'testing',title:'Inspection & Testing',icon:'🧪',text:`
+<h2>Inspection & Testing</h2>
+<p>Inspection and testing verify that an installation is safe and meets the applicable requirements before being put into service.</p>
+<ul>
+<li>Visual inspection</li>
+<li>Continuity of protective conductors</li>
+<li>Continuity of conductors where required</li>
+<li>Insulation resistance</li>
+<li>Polarity</li>
+<li>Earth fault loop impedance where applicable</li>
+<li>RCD testing where applicable</li>
+</ul>
+<p><strong>Important:</strong> test instruments must be suitable, in good condition and used according to their instructions and the relevant testing procedure.</p>`},
+{id:'install',title:'Domestic Installation Basics',icon:'🏠',text:`
+<h2>Domestic Installation Basics</h2>
+<p>A domestic installation may contain lighting circuits, socket circuits, cooker circuits, water-heating circuits and other dedicated loads.</p>
+<h3>Typical design considerations</h3>
+<ul>
+<li>Load demand and diversity</li>
+<li>Cable selection and current-carrying capacity</li>
+<li>Voltage drop</li>
+<li>Fault protection</li>
+<li>Earthing and bonding</li>
+<li>Isolation and switching</li>
+<li>Environmental conditions and mechanical protection</li>
+</ul>
+<div class="diagram"><svg viewBox="0 0 760 330" width="760">
+<rect x="40" y="90" width="150" height="90" rx="10" fill="none" stroke="#111827" stroke-width="3"/>
+<text x="115" y="125" text-anchor="middle" font-size="17">Consumer Unit</text><text x="115" y="150" text-anchor="middle" font-size="13">Protection</text>
+<line x1="190" y1="110" x2="300" y2="60" stroke="#111827" stroke-width="3"/>
+<line x1="190" y1="135" x2="300" y2="135" stroke="#111827" stroke-width="3"/>
+<line x1="190" y1="160" x2="300" y2="210" stroke="#111827" stroke-width="3"/>
+<rect x="300" y="30" width="180" height="55" rx="10" fill="none" stroke="#111827" stroke-width="3"/><text x="390" y="64" text-anchor="middle">Lighting circuit</text>
+<rect x="300" y="108" width="180" height="55" rx="10" fill="none" stroke="#111827" stroke-width="3"/><text x="390" y="142" text-anchor="middle">Socket circuit</text>
+<rect x="300" y="185" width="180" height="55" rx="10" fill="none" stroke="#111827" stroke-width="3"/><text x="390" y="219" text-anchor="middle">Dedicated load</text>
+<line x1="480" y1="58" x2="650" y2="58" stroke="#111827" stroke-width="3"/><text x="665" y="64" font-size="13">Lamps</text>
+<line x1="480" y1="136" x2="650" y2="136" stroke="#111827" stroke-width="3"/><text x="665" y="142" font-size="13">Sockets</text>
+<line x1="480" y1="213" x2="650" y2="213" stroke="#111827" stroke-width="3"/><text x="665" y="219" font-size="13">Equipment</text>
+</svg></div>`}
+];
+
+const qa=[
+['What is Ohm’s Law?','Ohm’s Law states that voltage equals current multiplied by resistance: V = I × R.'],
+['What is electrical current measured in?','Amperes (A).'],
+['What is resistance measured in?','Ohms (Ω).'],
+['What does an MCB do?','It provides overcurrent protection and disconnects a circuit when its operating conditions require it.'],
+['What is the purpose of an RCD?','It detects residual current/imbalance and can disconnect a circuit, providing additional protection against electric shock when correctly selected and installed.'],
+['What is earthing?','A protective connection that provides a path for fault current and helps protective devices operate under fault conditions.'],
+['What is bonding?','Connecting conductive parts as required to reduce dangerous differences in potential.'],
+['Name common inspection/testing activities.','Visual inspection, continuity, insulation resistance, polarity, earth fault loop impedance and RCD testing where applicable.'],
+['What is electrical power?','The rate at which electrical energy is transferred. It is measured in watts (W).'],
+['What is the formula for power in a simple DC circuit?','P = V × I.'],
+['What is a two-way lighting circuit?','A switching arrangement that allows one light to be controlled from two switch positions.'],
+['Why is cable selection important?','The cable must be suitable for the design current, installation conditions, voltage drop, fault protection and applicable requirements.'],
+['Why should a circuit be isolated before work?','To prevent electrical energy from creating a shock, arc or other hazard during work.'],
+['What is a CPC?','Circuit Protective Conductor. It provides a protective path for fault current.'],
+['What should you do if you are unsure about an installation requirement?','Stop and consult the applicable wiring rules, manufacturer instructions and a qualified/supervising person rather than guessing.']
+].map((x,i)=>({id:i,q:x[0],a:x[1]}));
+
+function showTab(id,btn){
+ document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));
+ document.getElementById(id).classList.remove('hidden');
+ document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+ btn.classList.add('active');
+ if(id==='notes') render(); if(id==='qa') renderQA(); if(id==='quiz') resetQuiz();
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+function match(item){
+ const term=document.getElementById('search').value.toLowerCase().trim();
+ const f=document.getElementById('filter').value;
+ return (f==='all'||item.id===f) && (!term||(item.title+' '+item.text).toLowerCase().includes(term));
+}
+function render(){
+ const el=document.getElementById('notesList');
+ const arr=notes.filter(match);
+ el.innerHTML=arr.length?arr.map(n=>`<article class="card note" style="margin-bottom:16px"><div class="icon">${n.icon}</div><h3>${n.title}</h3>${n.text}</article>`).join(''):'<div class="empty">No matching notes found.</div>';
+}
+function renderQA(){
+ const term=document.getElementById('search').value.toLowerCase().trim();
+ const arr=qa.filter(x=>(x.q+' '+x.a).toLowerCase().includes(term));
+ document.getElementById('qaList').innerHTML=arr.length?arr.map(x=>`<div class="qa"><div class="q">Q: ${x.q}</div><div class="a"><b>Answer:</b> ${x.a}</div></div>`).join(''):'<div class="empty">No matching questions found.</div>';
+}
+document.getElementById('search').addEventListener('input',()=>{if(!document.getElementById('notes').classList.contains('hidden'))render();if(!document.getElementById('qa').classList.contains('hidden'))renderQA();});
+
+let quiz=[],qi=0,score=0,answered=false;
+function resetQuiz(){
+ quiz=[...qa].sort(()=>Math.random()-.5).slice(0,10).map(x=>{
+   let wrong=qa.filter(y=>y.id!==x.id).sort(()=>Math.random()-.5).slice(0,3).map(y=>y.a);
+   return {...x,opts:[x.a,...wrong].sort(()=>Math.random()-.5)};
+ });
+ qi=0;score=0;answered=false;showQuestion();
+}
+function showQuestion(){
+ const q=quiz[qi]; answered=false;
+ document.getElementById('score').textContent=`Score: ${score} / ${qi}`;
+ document.getElementById('bar').style.width=(qi/quiz.length*100)+'%';
+ document.getElementById('question').innerHTML=`<h3>Question ${qi+1} of ${quiz.length}</h3><p>${q.q}</p>`;
+ document.getElementById('options').innerHTML=q.opts.map((o,i)=>`<button class="option" onclick="answer(this,${i})">${o}</button>`).join('');
+ document.getElementById('next').disabled=true;
+ document.getElementById('next').textContent=qi===quiz.length-1?'Finish':'Next Question';
+}
+function answer(btn,i){
+ if(answered)return;answered=true;
+ const q=quiz[qi], buttons=[...document.querySelectorAll('.option')];
+ buttons.forEach((b,j)=>{if(q.opts[j]===q.a)b.classList.add('correct')});
+ if(q.opts[i]===q.a)score++; else btn.classList.add('wrong');
+ document.getElementById('score').textContent=`Score: ${score} / ${qi+1}`;
+ document.getElementById('next').disabled=false;
+}
+function nextQuestion(){
+ if(!answered)return;
+ if(qi<quiz.length-1){qi++;showQuestion()}
+ else{
+   document.getElementById('bar').style.width='100%';
+   document.getElementById('question').innerHTML=`<h2>🎉 Quiz Complete</h2><p>You scored <b>${score} / ${quiz.length}</b> (${Math.round(score/quiz.length*100)}%).</p>`;
+   document.getElementById('options').innerHTML='';
+   document.getElementById('next').textContent='Try Again';document.getElementById('next').onclick=resetQuiz;
+ }
+}
+function startVoice(){
+ if(!('webkitSpeechRecognition' in window||'SpeechRecognition' in window)){alert('Voice search is not supported by this browser. Try Chrome on Android.');return}
+ const R=window.SpeechRecognition||window.webkitSpeechRecognition,r=new R();
+ r.lang='en-US';r.interimResults=false;r.onresult=e=>{document.getElementById('search').value=e.results[0][0].transcript;render();renderQA()};
+ r.start();
+}
+function openAI(){document.getElementById('modal').classList.add('show');document.getElementById('aiInput').focus()}
+function closeAI(){document.getElementById('modal').classList.remove('show')}
+function askAI(){
+ const q=document.getElementById('aiInput').value.toLowerCase().trim();
+ if(!q)return;
+ const hits=qa.filter(x=>(x.q+' '+x.a).toLowerCase().includes(q.split(/\s+/).filter(w=>w.length>2).slice(0,4).join(' ')));
+ let answer=hits[0]?`<b>${hits[0].q}</b><p>${hits[0].a}</p>`:'<p>I could not find a direct answer in the built-in material. Try terms such as <b>Ohm’s Law</b>, <b>MCB</b>, <b>RCD</b>, <b>earthing</b>, <b>bonding</b>, <b>testing</b> or <b>two-way switching</b>.</p>';
+ document.getElementById('aiAnswer').innerHTML=answer;
+}
+render();
+</script>
+</body>
+</html>
